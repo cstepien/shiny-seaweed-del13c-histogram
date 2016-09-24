@@ -1,9 +1,14 @@
 library(shiny)
+library(ggplot2)
+library(dplyr)
+rawdata <- read.csv("data.csv")
 
 ui <- fluidPage(
-  sliderInput(inputId = "isotope",
-              label = "Choose a Carbon-13 isotope value", 
-              value = 5, min = 1, max = 100),
+  checkboxGroupInput(inputId = "taxa", label = "Select Taxa to Display", 
+                     c("Green Seaweeds (Chlorophyta)" = "Chlorophyta", "Red Seaweeds (Rhodophyta)" = "Rhodophyta", 
+                       "Brown Seaweeds (Ochrophyta)" = "Ochrophyta", "Surfgrasses (Tracheophyta)" = "Tracheophyta"),
+                     selected = c("Chlorophyta", "Rhodophyta", 
+                                  "Ochrophyta", "Tracheophyta")), 
   actionButton(inputId = "go",
                label = "Update"),
   plotOutput(outputId = "hist"),
