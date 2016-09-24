@@ -1,3 +1,5 @@
+# Add binwidth slider, and resulting value in ggplot binwidth - maybe from 1 to 10 for binwidth
+
 library(shiny)
 library(ggplot2)
 library(dplyr)
@@ -9,15 +11,14 @@ ui <- fluidPage(
                        "Brown Seaweeds (Ochrophyta)" = "Ochrophyta", "Surfgrasses (Tracheophyta)" = "Tracheophyta"),
                      selected = c("Chlorophyta", "Rhodophyta", 
                                   "Ochrophyta", "Tracheophyta")), 
-  actionButton(inputId = "go",
-               label = "Plot histogram"),
+  #actionButton(inputId = "go",
+               #label = "Plot histogram"),
   plotOutput(outputId = "hist"),
   verbatimTextOutput(outputId = "stats")
 )
 
 server <- function(input, output) {
-  data <- eventReactive(input$go, 
-                        {filter(rawdata, division %in% input$taxa)})
+  data <- reactive({filter(rawdata, division %in% input$taxa)})
   output$hist <- renderPlot({
     ggplot(data(), aes(x = del13c)) + geom_histogram(binwidth = 1) + xlim(-40,0) + ylim(0,110) +
       geom_vline(xintercept = -30, linetype = "dotted", size = 1) +
