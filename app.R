@@ -1,4 +1,6 @@
 # Add binwidth slider, and resulting value in ggplot binwidth - maybe from 1 to 10 for binwidth
+# Edit fill - make it white, with a black outline for each bar
+# Goint to need the ylimit to be dependent on the binwidth - if you have 10 widths, what's the max count of a single bin?
 
 library(shiny)
 library(ggplot2)
@@ -20,7 +22,8 @@ ui <- fluidPage(
 server <- function(input, output) {
   data <- reactive({filter(rawdata, division %in% input$taxa)})
   output$hist <- renderPlot({
-    ggplot(data(), aes(x = del13c)) + geom_histogram(binwidth = 1) + xlim(-40,0) + ylim(0,110) +
+    ggplot(data(), aes(x = del13c)) + xlim(-40,0) + ylim(0,110) +
+      geom_histogram(binwidth = 1, fill = "gray", color = "black") +
       geom_vline(xintercept = -30, linetype = "dotted", size = 1) +
       xlab(expression(paste("\nMean species ", delta^{13}, "C ", "(\u2030)"))) +
       ylab("Count") +
@@ -35,7 +38,5 @@ server <- function(input, output) {
   #output$stats <- renderPrint({
    # summary(mode(data()))})
 }
-
-
 
 shinyApp(ui = ui, server = server)
