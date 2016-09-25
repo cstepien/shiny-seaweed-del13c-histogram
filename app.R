@@ -1,11 +1,9 @@
-# Add binwidth slider, and resulting value in ggplot binwidth - maybe from 1 to 10 for binwidth
-# Edit fill - make it white, with a black outline for each bar
-# Goint to need the ylimit to be dependent on the binwidth - if you have 10 widths, what's the max count of a single bin?
-
 library(shiny)
 library(ggplot2)
 library(dplyr)
+library(modeest)
 rawdata <- read.csv("data.csv")
+rawdata$del13c <- round(rawdata$del13c, digits = 0)
 yaxis <- c(70, 110, 170, 200, 215)
 
 ui <- fluidPage(
@@ -17,11 +15,14 @@ ui <- fluidPage(
   #actionButton(inputId = "go",
                #label = "Plot histogram"),
   selectInput(inputId = "binwidth", 
-              label = "Binwidth in histogram", 
+              label = "Bin width (isotope units)", 
               choices = c(1, 2, 3, 4, 5), 
-              selected = 1),
+              selected = 1,
+              width = '70px'),
   plotOutput(outputId = "hist"),
-  verbatimTextOutput(outputId = "stats")
+  verbatimTextOutput(outputId = "max"),
+  verbatimTextOutput(outputId = "min"),
+  verbatimTextOutput(outputId = "mo")
 )
 
 server <- function(input, output) {
@@ -29,7 +30,7 @@ server <- function(input, output) {
   bin <- reactive({as.numeric(input$binwidth)})
   lim <- reactive({yaxis[as.numeric(input$binwidth)]})
   output$hist <- renderPlot({
-    ggplot(data(), aes(x = del13c)) + xlim(-40,0) + ylim(0,lim()) +
+    ggplot(data(), aes(x = del13c)) + xlim(-41,0) + ylim(0,lim()) +
       geom_histogram(binwidth = bin(), fill = "gray", color = "black") +
       geom_vline(xintercept = -30, linetype = "dotted", size = 1) +
       xlab(expression(paste("\nMean species ", delta^{13}, "C ", "(\u2030)"))) +
@@ -42,8 +43,9 @@ server <- function(input, output) {
             axis.title.x = element_text(size=20), 
             axis.title.y = element_text(size=20))
     })
-  #output$stats <- renderPrint({
-   # summary(mode(data()))})
+  output$max <- renderText({paste("Maximum species ", "\u03B413C", "(\u2030) =", max(data()$del13c))})
+  output$min <- renderText({paste("Minimum species ", "\u03B413C", "(\u2030) =", min(data()$del13c))})
+  output$mo <- renderText({paste("Most common species ", "\u03B413C", "(\u2030) =", mfv(data()$del13c))})
 }
 
 shinyApp(ui = ui, server = server)
