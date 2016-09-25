@@ -1,3 +1,5 @@
+# add Bicarbonate + CO2 users, versus CO2 only users for each selection
+# Add a title overall, a description of the interactive feature
 library(shiny)
 library(ggplot2)
 library(dplyr)
@@ -45,7 +47,8 @@ server <- function(input, output) {
     })
   output$max <- renderText({paste("Maximum species ", "\u03B413C", "(\u2030) =", max(data()$del13c))})
   output$min <- renderText({paste("Minimum species ", "\u03B413C", "(\u2030) =", min(data()$del13c))})
-  output$mo <- renderText({paste("Most common species ", "\u03B413C", "(\u2030) =", mfv(data()$del13c))})
+  output$mo <- renderText({paste("Most common species ", "\u03B413C", "(\u2030) =", 
+                                 paste(mfv(data()$del13c), collapse = ", "))})
 }
 
 shinyApp(ui = ui, server = server)
