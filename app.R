@@ -6,6 +6,7 @@ library(shiny)
 library(ggplot2)
 library(dplyr)
 rawdata <- read.csv("data.csv")
+yaxis <- c(70, 110, 170, 200, 215)
 
 ui <- fluidPage(
   checkboxGroupInput(inputId = "taxa", label = "Select Taxa to Display", 
@@ -15,15 +16,21 @@ ui <- fluidPage(
                                   "Ochrophyta", "Tracheophyta")), 
   #actionButton(inputId = "go",
                #label = "Plot histogram"),
+  selectInput(inputId = "binwidth", 
+              label = "Binwidth in histogram", 
+              choices = c(1, 2, 3, 4, 5), 
+              selected = 1),
   plotOutput(outputId = "hist"),
   verbatimTextOutput(outputId = "stats")
 )
 
 server <- function(input, output) {
   data <- reactive({filter(rawdata, division %in% input$taxa)})
+  bin <- reactive({as.numeric(input$binwidth)})
+  lim <- reactive({yaxis[as.numeric(input$binwidth)]})
   output$hist <- renderPlot({
-    ggplot(data(), aes(x = del13c)) + xlim(-40,0) + ylim(0,110) +
-      geom_histogram(binwidth = 1, fill = "gray", color = "black") +
+    ggplot(data(), aes(x = del13c)) + xlim(-40,0) + ylim(0,lim()) +
+      geom_histogram(binwidth = bin(), fill = "gray", color = "black") +
       geom_vline(xintercept = -30, linetype = "dotted", size = 1) +
       xlab(expression(paste("\nMean species ", delta^{13}, "C ", "(\u2030)"))) +
       ylab("Count") +
