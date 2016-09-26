@@ -6,7 +6,7 @@ library(dplyr)
 library(modeest)
 rawdata <- read.csv("data.csv")
 rawdata$del13c <- round(rawdata$del13c, digits = 0)
-rawdata$color <- ifelse(rawdata$del13c < -30, "purple", "pink")
+rawdata$color <- factor(ifelse(rawdata$del13c < -30, "purple", "pink"))
 yaxis <- c(70, 140, 170, 200, 215)
 
 ui <- fluidPage(
@@ -38,7 +38,7 @@ ui <- fluidPage(
            verbatimTextOutput(outputId = "max"),
            verbatimTextOutput(outputId = "min"),
            verbatimTextOutput(outputId = "mo")), 
-    column(9, plotOutput(outputId = "hist"))),
+    column(9, align = "left", plotOutput(outputId = "hist"))),
   tags$hr(),
   tags$h2("The Science of Seaweeds"),
   fluidRow(
@@ -90,8 +90,8 @@ server <- function(input, output) {
     ggplot(data(), aes(x = del13c, fill = color, color = "black")) + xlim(-45,0) + ylim(0,lim()) +
       geom_histogram(binwidth = bin(), color = "black") +
       #geom_histogram(data = filter(data(), del13c >= -30), binwidth = bin(), fill = "pink", color = "black") +
-      scale_fill_manual(name = "Legend", values = c("purple" = "purple", "pink" = "pink"), 
-                        labels = c("Carbon Dioxide Only", "Bicarbonate User")) +
+      scale_fill_manual(drop = FALSE, name = "Legend", values = c("purple" = "purple", "pink" = "pink"), 
+                        labels = c("Bicarbonate User", "CO2 Only")) +
       geom_vline(xintercept = -30, linetype = "dotted", size = 1) +
       xlab(expression(paste("\nMean species ", delta^{13}, "C ", "(\u2030)"))) +
       ylab("Species Count") +
@@ -103,7 +103,8 @@ server <- function(input, output) {
             axis.title.x = element_text(size=20), 
             axis.title.y = element_text(size=20), 
             legend.text = element_text(size = 15), 
-            legend.title = element_text(size = 15))
+            legend.title = element_text(size = 15),
+            legend.position = c(0.9,0.7))
     })
   output$max <- renderText({paste("Max species ", "\u03B413C", "(\u2030) =", max(data()$del13c))})
   output$min <- renderText({paste("Min species ", "\u03B413C", "(\u2030) =", min(data()$del13c))})
