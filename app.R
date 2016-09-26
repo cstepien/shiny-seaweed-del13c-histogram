@@ -58,7 +58,8 @@ ui <- fluidPage(
             so no all seaweeds have adopted this new lifestyle.")),
     column(5, tags$img(height = 405, 
            width = 540,
-           src = "seaweed.jpg"))),
+           src = "seaweed.jpg"), 
+           tags$p("Taken by Orissa Moulton"))),
   tags$h3("You Are What You Eat"),
   tags$p(style = "font-size:13.5pt", "Now, in order to tease out which seaweeds are using carbon dioxide only, 
          and which seaweeds can also use bicarbonate, all we have to do is look at
