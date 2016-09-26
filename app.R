@@ -6,6 +6,7 @@ library(dplyr)
 library(modeest)
 rawdata <- read.csv("data.csv")
 rawdata$del13c <- round(rawdata$del13c, digits = 0)
+rawdata$color <- ifelse(rawdata$del13c < -30, "purple", "pink")
 yaxis <- c(70, 140, 170, 200, 215)
 
 ui <- fluidPage(
@@ -21,7 +22,7 @@ ui <- fluidPage(
   tags$p(style = "font-size:13.5pt", "You can choose which seaweed Phyla to show data for (and the 1 surfgrass Phylum too). Also, 
          you can change the size of the bins. The output next to the histogram will show you the maximum, minimum
          and mode isotope value for your selection."),
-  tags$h2("Discover for Yourself Which Marine Plants use Bicarbonate, and Which are Stuck on the CO2-only Diet"),
+  tags$h2("Discover Which Marine Plants use Bicarbonate, and Which are Stuck on the CO2-only Diet"),
   tags$br(),
   fluidRow(
     column(3, checkboxGroupInput(inputId = "taxa", label = "Select Taxa to Display", 
@@ -86,10 +87,11 @@ server <- function(input, output) {
   bin <- reactive({as.numeric(input$binwidth)})
   lim <- reactive({yaxis[as.numeric(input$binwidth)]})
   output$hist <- renderPlot({
-    ggplot(data(), aes(x = del13c)) + xlim(-45,0) + ylim(0,lim()) +
-      geom_histogram(aes(fill = "CO2.Only"), data = filter(data(), del13c < -30), binwidth = bin(), color = "black") +
-      geom_histogram(aes(fill = "Bicarbonate.User"), data = filter(data(), del13c >= -30), binwidth = bin(), color = "black") +
-      scale_fill_manual(name = "Legend", values = c("CO2.Only" = "purple", "Bicarbonate.User" = "pink")) +
+    ggplot(data(), aes(x = del13c, fill = color, color = "black")) + xlim(-45,0) + ylim(0,lim()) +
+      geom_histogram(binwidth = bin(), color = "black") +
+      #geom_histogram(data = filter(data(), del13c >= -30), binwidth = bin(), fill = "pink", color = "black") +
+      scale_fill_manual(name = "Legend", values = c("purple" = "purple", "pink" = "pink"), 
+                        labels = c("Carbon Dioxide Only", "Bicarbonate User")) +
       geom_vline(xintercept = -30, linetype = "dotted", size = 1) +
       xlab(expression(paste("\nMean species ", delta^{13}, "C ", "(\u2030)"))) +
       ylab("Species Count") +
@@ -99,7 +101,9 @@ server <- function(input, output) {
             axis.text.x = element_text(size=20, color = "black"), 
             axis.text.y = element_text(size=20, color = "black"),
             axis.title.x = element_text(size=20), 
-            axis.title.y = element_text(size=20))
+            axis.title.y = element_text(size=20), 
+            legend.text = element_text(size = 15), 
+            legend.title = element_text(size = 15))
     })
   output$max <- renderText({paste("Max species ", "\u03B413C", "(\u2030) =", max(data()$del13c))})
   output$min <- renderText({paste("Min species ", "\u03B413C", "(\u2030) =", min(data()$del13c))})
