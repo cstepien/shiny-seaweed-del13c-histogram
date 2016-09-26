@@ -5,7 +5,7 @@
 This project is an R Shiny interactive graph for Figure 3 "Histogram of mean species d13C by phylum" from CC Stepien, Impacts of geography, taxonomy and functional group on inorganic carbon use patterns in marine macrophytes (2015) Journal of Ecology 103 (6), 1372-1383
 Paper can be found [here](http://onlinelibrary.wiley.com/doi/10.1111/1365-2745.12451/full).
 
-The current form of the interactive graph is [published here on my shinyapps.io account](https://courtneystepien.shinyapps.io/Seaweed_Isotopes_Histogram/). 
+The current form of the interactive graph is [published here on my shinyapps.io account](https://courtneystepien.shinyapps.io/Seaweed-Isotopes-Histogram//). 
 
 ## License
 

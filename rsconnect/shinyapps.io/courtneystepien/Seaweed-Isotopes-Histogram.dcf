@@ -2,8 +2,8 @@ name: Seaweed-Isotopes-Histogram
 account: courtneystepien
 server: shinyapps.io
 appId: 127797
-bundleId: 568229
+bundleId: 568269
 url: https://courtneystepien.shinyapps.io/Seaweed-Isotopes-Histogram/
-when: 1474862177.24667
+when: 1474869518.10116
 asMultiple: FALSE
 asStatic: FALSE
