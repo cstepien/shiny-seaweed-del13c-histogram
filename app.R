@@ -72,6 +72,8 @@ ui <- fluidPage(
          food, end up with more negative values. It turns out that most seaweeds are not on a diet. "),
   tags$hr(),
   tags$h2("Learn more about the project"),
+  tags$p(style = "font-size:13.5pt", "Code for this Shiny app can be found", 
+         tags$a(href = "https://github.com/cstepien/shiny-seaweed-del13c-histogram", "on GitHub.")),
   tags$p(style = "font-size:13.5pt", "The original paper can be found", tags$a(href = "http://onlinelibrary.wiley.com/doi/10.1111/1365-2745.12451/full", "here"), 
          "Impacts of geography, taxonomy and functional group on inorganic carbon use 
          patterns in marine macrophytes (2015) Journal of Ecology 103 (6), 1372-1383."),
@@ -79,7 +81,7 @@ ui <- fluidPage(
   tags$p(style = "font-size:13.5pt", "And Hannah Brechka wrote a cool general article about the project", 
          tags$a(href = "https://sciencelife.uchospitals.edu/2015/10/21/seaweed-state-of-the-union/", 
                 "over at UChicago Science Life")),
-  tags$p(style = "font-size:13.5pt", "You can contact me at cstepien@uchicago.edu and follow my current seaweed project on", 
+  tags$p(style = "font-size:13.5pt", "You can contact me at", strong("cstepien@uchicago.edu"), "and follow my current seaweed project on", 
          tags$a(href = "https://github.com/cstepien/Evolution-of-CCMs", "GitHub"))
 )
 
