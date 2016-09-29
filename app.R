@@ -25,7 +25,7 @@ ui <- fluidPage(
   tags$h2("Discover Which Marine Plants use Bicarbonate, and Which are Stuck on the CO2-only Diet"),
   tags$br(),
   fluidRow(
-    column(3, checkboxGroupInput(inputId = "taxa", label = "Select Taxa to Display", 
+    column(3, wellPanel(checkboxGroupInput(inputId = "taxa", label = "Select Taxa to Display", 
                      c("Green Seaweeds (Chlorophyta)" = "Chlorophyta", "Red Seaweeds (Rhodophyta)" = "Rhodophyta", 
                        "Brown Seaweeds (Ochrophyta)" = "Ochrophyta", "Surfgrasses (Tracheophyta)" = "Tracheophyta"),
                      selected = c("Chlorophyta", "Rhodophyta", 
@@ -37,7 +37,7 @@ ui <- fluidPage(
                        width = '70px'), 
            verbatimTextOutput(outputId = "max"),
            verbatimTextOutput(outputId = "min"),
-           verbatimTextOutput(outputId = "mo")), 
+           verbatimTextOutput(outputId = "mo"))), 
     column(9, align = "left", plotOutput(outputId = "hist"))),
   tags$hr(),
   tags$h2("The Science of Seaweeds"),
@@ -49,17 +49,17 @@ ui <- fluidPage(
            that the oceans act as big sponges, big sinks that just suck up all that extra carbon dioxide, 
            and that's actually changing the ocean chemistry – how much carbon is available to seaweeds, 
            what type of carbon is available to them, and these can have some implications for ocean 
-           communities and ecosystems down the line."), 
-           tags$h3("Some Quick Ocean Chemistry"),
-           tags$p(style = "font-size:13.5pt", "In our gardens and parks, plants photosynthesize and use carbon dioxide, super easy, no big deal.
+           communities and ecosystems down the line.")), 
+    column(5, tags$br(), tags$img(height = 252, 
+           width = 337,
+           src = "seaweed.jpg"), 
+           tags$p("Taken by Orissa Moulton"))),
+  tags$h3("Some Quick Ocean Chemistry"),
+  tags$p(style = "font-size:13.5pt", "In our gardens and parks, plants photosynthesize and use carbon dioxide, super easy, no big deal.
             In the oceans though, carbon dioxide is actually rare - less than 1% of all the dissolved inorganic
             carbon in water! So lots of seaweeds have swtiched over to using not only that rare carbon dioxide,
             but also the super-abundant bicarbonate. It's a little more costly energy-wise to use bicarbonate, 
-            so no all seaweeds have adopted this new lifestyle.")),
-    column(5, tags$img(height = 405, 
-           width = 540,
-           src = "seaweed.jpg"), 
-           tags$p("Taken by Orissa Moulton"))),
+            so no all seaweeds have adopted this new lifestyle."),
   tags$h3("You Are What You Eat"),
   tags$p(style = "font-size:13.5pt", "Now, in order to tease out which seaweeds are using carbon dioxide only, 
          and which seaweeds can also use bicarbonate, all we have to do is look at
